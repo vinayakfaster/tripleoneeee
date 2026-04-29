@@ -1,0 +1,42 @@
+import ClientOnly from "@/components/ClientOnly";
+import EmptyState from "@/components/EmptyState";
+import React from "react";
+import getCurrentUser from "../actions/getCurrentUser";
+import getFavoriteListings from "../actions/getFavoriteListings";
+import FavoritesClient from "./FavoritesClient";
+import { SafeUser } from "../types";
+
+type Props = {};
+
+const FavoritePage = async (props: Props) => {
+  const currentUser = await getCurrentUser() as SafeUser;
+
+  if (!currentUser) {
+    return (
+      <ClientOnly>
+        <EmptyState title="Unauthorized" subtitle="Please login" />
+      </ClientOnly>
+    );
+  }
+
+  const listings = await getFavoriteListings();
+
+  if (listings.length === 0) {
+    return (
+      <ClientOnly>
+        <EmptyState
+          title="No favorites found"
+          subtitle="Looks like you have no favorite listings."
+        />
+      </ClientOnly>
+    );
+  }
+
+  return (
+    <ClientOnly>
+      <FavoritesClient listings={listings.map(listing => ({ ...listing, isBestSeller: false }))} currentUser={currentUser} />
+    </ClientOnly>
+  );
+};
+
+export default FavoritePage;
