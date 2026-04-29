@@ -55,9 +55,10 @@ interface Props {
   title?: string;
   variant?: "hero" | "blog";
   listing?: SafeListing & { user: SafeUser }; // ✅ optional — not required on home page
+  listingId?: string;
 }
 
-export default function Navbar({ currentUser, images, locationValue, title, listing }: Props) {
+export default function Navbar({ currentUser, images, locationValue, title, listing,  listingId,  }: Props) {
   const router        = useRouter();
   const loginModal    = useLoginModal();
   const registerModal = useRegisterModal();
@@ -125,6 +126,11 @@ export default function Navbar({ currentUser, images, locationValue, title, list
     document.addEventListener("mousedown", handler);
     return () => document.removeEventListener("mousedown", handler);
   }, []);
+const listingIds = [
+  "6877f83f233e5dc43231089e",
+  "6889ed5f545d937d8360bf93",
+  "69ef460da5be5a76eeacb871"
+];
 
   const handleSearch = useCallback(() => {
     const query: Record<string, any> = {};
@@ -137,11 +143,15 @@ export default function Navbar({ currentUser, images, locationValue, title, list
   }, [selectedLoc, selectedType, dateRange, router]);
 
   // ✅ Enquire — only works on listing page (listing prop available)
-  const handleEnquire = () => {
-    if (listing?.id) router.push(`/enquiry/${listing.id}`);
-    else router.push("/enquiry");
-  };
+const handleEnquire = () => {
+  console.log("ENQUIRE CLICKED", listingId);
 
+  const id =
+    listingId ||
+    listingIds[Math.floor(Math.random() * listingIds.length)];
+
+  router.push(`/enquiry/${id}?success=true`);
+};
   // ✅ Become a host
   const handleBecomeHost = useCallback(() => {
     if (!currentUser) return loginModal.onOpen();
@@ -312,7 +322,7 @@ export default function Navbar({ currentUser, images, locationValue, title, list
             </a>
 
             {/* ENQUIRE button */}
-            <motion.button whileTap={{ scale: 0.95 }} onClick={handleEnquire}
+            <motion.button whileTap={{ scale: 0.95 }}  onClick={() => handleEnquire()}
               style={{
                 background: `linear-gradient(135deg, ${OL[500]}, ${OL[600]})`,
                 color: OL.cream, border: `1px solid ${OL.goldLight}`,

@@ -23,7 +23,17 @@ export default function BlogPostClient({ post }: { post: BlogPost }) {
   }, []);
 
   const related = blogData.filter((b) => b.slug !== post.slug).slice(0, 3);
+const listingIds = [
+  "6877f83f233e5dc43231089e",
+  "6889ed5f545d937d8360bf93",
+  "69ef460da5be5a76eeacb871"
+];const handleEnquire = () => {
+  console.log("ENQUIRE CLICKED");
 
+  const id = listingIds[Math.floor(Math.random() * listingIds.length)];
+
+  router.push(`/enquiry/${id}?success=true`);
+};
   return (
     <>
     {(post as any).images && (
@@ -335,13 +345,17 @@ export default function BlogPostClient({ post }: { post: BlogPost }) {
           <p className="text-white/60 mb-8 text-sm" style={{ fontFamily: "'Lato', sans-serif" }}>
             {post.priceRange} · Enquiries responded to within 24 hours
           </p>
-          <Link
-            href="/enquiry"
-            className="inline-block px-10 py-4 text-white text-sm tracking-[0.25em] uppercase transition hover:opacity-90"
-            style={{ background: "#9e7d4b", fontFamily: "'Lato', sans-serif", letterSpacing: "0.2em" }}
-          >
-            Enquire Now
-          </Link>
+<button
+  onClick={handleEnquire}
+  className="inline-block px-10 py-4 text-white text-sm tracking-[0.25em] uppercase transition hover:opacity-90"
+  style={{
+    background: "#9e7d4b",
+    fontFamily: "'Lato', sans-serif",
+    letterSpacing: "0.2em",
+  }}
+>
+  Enquire Now
+</button>
         </div>
 
         {/* Author */}

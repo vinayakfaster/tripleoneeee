@@ -27,6 +27,7 @@ type Props = {
   reservations?: SafeReservation[];
   listing: SafeListing & { user: SafeUser };
   currentUser?: SafeUser | null;
+  listingId?: string; 
 };
 
 export default function ListingClient({ reservations = [], listing, currentUser }: Props) {
@@ -93,6 +94,7 @@ const handleEnquiry = () => {
         images={listing.imageSrc}
         locationValue={listing.locationValue}
         title={listing.title}
+        listingId={listing.id}
       />
 
       {/* ── STICKY NAV TABS (Leela style) ── */}

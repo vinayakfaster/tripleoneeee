@@ -3,7 +3,8 @@
 import { useState } from "react";
 import axios from "axios";
 import Image from "next/image";
-
+import Head from "next/head";
+import { getGuestId } from "@/lib/guest";
 // ── OLIVE PALETTE ──
 const OL = {
   900: "#1a2210", 800: "#243018", 600: "#3d5228", 500: "#556b35",
@@ -11,7 +12,7 @@ const OL = {
   cream: "#f5f2ea",
 };
 
-export default function EnquiryClient({ listing }: any) {
+export default function EnquiryClient({ listing, currentUser }: any) {
   const [name, setName]           = useState("");
   const [phone, setPhone]         = useState("");
   const [countryCode, setCountryCode] = useState("+91");
@@ -23,28 +24,47 @@ export default function EnquiryClient({ listing }: any) {
   const [message, setMessage]     = useState("");
   const [success, setSuccess]     = useState(false);
   const [loading, setLoading]     = useState(false);
+const listingIds = [
+  "6877f83f233e5dc43231089e",
+  "6889ed5f545d937d8360bf93",
+  "69ef460da5be5a76eeacb871"
+];
 
-  const onSubmit = async () => {
-    try {
-      setLoading(true);
-      await axios.post("/api/enquiry", {
-        listingId:    listing.id,
-        name,
-        phone:        `${countryCode}${phone}`,
-        email,
-        message,
-        guestCount:   Number(guests),
-        listingTitle: listing.title,
-        startDate:    eventDate,
-        listingImage: listing.imageSrc?.[0],
-      });
-      setSuccess(true);
-    } catch {
-      alert("Error sending enquiry. Please try again.");
-    } finally {
-      setLoading(false);
+const onSubmit = async () => {
+  try {
+    setLoading(true);
+
+    if (!listing?.id) {
+      alert("Invalid listing. Please go back and try again.");
+      return;
     }
-  };
+
+    const guestId = getGuestId();
+
+    await axios.post("/api/enquiry", {
+      listingId: listing.id,
+      userId: currentUser?.id || null,
+      guestId: currentUser ? null : guestId,
+
+      name,
+      phone: `${countryCode}${phone}`,
+      email,
+      message,
+      guestCount: Number(guests),
+
+      listingTitle: listing.title,
+      startDate: eventDate || null,
+      listingImage: listing.imageSrc?.[0] || null,
+    });
+
+    setSuccess(true);
+  } catch (err) {
+    console.error(err);
+    alert("Error sending enquiry");
+  } finally {
+    setLoading(false);
+  }
+};
 
   // ── INPUT STYLE ──
   const inputStyle: React.CSSProperties = {
@@ -68,7 +88,6 @@ export default function EnquiryClient({ listing }: any) {
   return (
     <>
       <style>{`
-        @import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400&family=Lato:wght@300;400;700&display=swap');
         .enq-input:focus { border-color: #6b8540 !important; }
         .enq-input::placeholder { color: rgba(26,34,16,0.35); }
       `}</style>

@@ -11,6 +11,8 @@ type Props = {
 const HIDE_NAVBAR_PATHS = [
   "/listings/",
   "/blog/",
+   "/enquiry/",
+  "/admin/",
 ];
 
 export default function NavbarWrapper({ currentUser }: Props) {

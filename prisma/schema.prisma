@@ -132,7 +132,7 @@ model Enquiry {
   email         String
   phone         String
   message       String?
-
+  guestId   String? 
   listingTitle  String?
   listingImage  String?
   guestCount    Int?

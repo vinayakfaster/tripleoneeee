@@ -22,15 +22,15 @@ const ListingPage = async ({ params }: { params: IParams }) => {
     );
   }
 
-  return (
-    <ClientOnly>
-      <ListingClient
-        listing={listing as any}
-        currentUser={currentUser}
-        reservations={reservations}
-      />
-    </ClientOnly>
-  );
+return (
+  <ClientOnly>
+    <ListingClient
+      listing={listing as any}
+      currentUser={currentUser}
+      reservations={reservations}
+    />
+  </ClientOnly>
+);
 };
 
 export default ListingPage;

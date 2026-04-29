@@ -41,6 +41,12 @@ export default async function RootLayout({
 
   return (
     <html lang="en" className={nunito.variable}>
+      <head>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400&family=Lato:wght@300;400;700&display=swap"
+    rel="stylesheet"
+  />
+</head>
       <body
         className="
           font-sans

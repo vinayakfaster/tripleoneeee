@@ -6,7 +6,7 @@ import getCurrentUser from "./actions/getCurrentUser";
 import getListings, { IListingsParams } from "./actions/getListings";
 import HorizontalListingRow from "@/components/listing/HorizontalListingRow";
 import Script from "next/script";
-import { SafeListing, SafeUser } from "../app/types";
+import { SafeListing, SafeUser } from "@/app/types";
 import LuxuryShowcase from "@/components/LuxuryShowcase";
 import SpiraShowcase from "@/components/SpiraShowcase";
 import CityShowcase from "@/components/CityShowcase";
@@ -15,18 +15,21 @@ import CuratedOffers from "@/components/CuratedOffers";
 import FAQSection from "@/components/FAQSection";
 
 interface HomeProps {
-  searchParams: IListingsParams;
+  searchParams?: IListingsParams;
 }
 
-export default async function Home({ searchParams }: HomeProps) {
-  const allListings = await getListings(searchParams);
-  const listings: SafeListing[] = allListings.map((item) => ({
+export default async function Page({ searchParams }: HomeProps) {
+  const allListings = await getListings(searchParams ?? {});
+
+  const listings: SafeListing[] = (allListings ?? []).map((item) => ({
     ...item,
     isBestSeller: false,
   }));
+
   const currentUser: SafeUser | null = await getCurrentUser();
 
-  if (!listings.length) {
+  // SAFE GUARD (no crash if empty)
+  if (!listings || listings.length === 0) {
     return (
       <ClientOnly>
         <EmptyState showReset />
@@ -34,8 +37,10 @@ export default async function Home({ searchParams }: HomeProps) {
     );
   }
 
-  // Helper to mark favorites and keep type
-  const markFavorite = (item: SafeListing, isFavorite: boolean): SafeListing => ({
+  const markFavorite = (
+    item: SafeListing,
+    isFavorite: boolean
+  ): SafeListing => ({
     ...item,
     isFavorite,
   });
@@ -45,10 +50,14 @@ export default async function Home({ searchParams }: HomeProps) {
     .map((item, idx) => markFavorite(item, idx % 2 === 0));
 
   const chandniChowkListings: SafeListing[] = listings
-    .filter((l) => l.locationValue?.toLowerCase().includes("chandni"))
+    .filter((l) =>
+      l.locationValue?.toLowerCase().includes("chandni")
+    )
     .map((item, idx) => markFavorite(item, idx % 2 !== 0));
 
-  const shownIds = new Set([...recentlyViewed, ...chandniChowkListings].map((l) => l.id));
+  const shownIds = new Set(
+    [...recentlyViewed, ...chandniChowkListings].map((l) => l.id)
+  );
 
   const remainingListings: SafeListing[] = listings
     .filter((l) => !shownIds.has(l.id))
@@ -60,47 +69,46 @@ export default async function Home({ searchParams }: HomeProps) {
         src="https://checkout.razorpay.com/v1/checkout.js"
         strategy="lazyOnload"
       />
+
       <Container>
-  <div className="-mt-16 md:-mt-20">
-<SpiraShowcase />
-      <CityShowcase />
- <LuxuryShowcase /> 
-  <HorizontalListingRow 
-      title=""
-      listings={recentlyViewed}
-      currentUser={currentUser}
-    />
+        <div className="-mt-16 md:-mt-20">
+          <SpiraShowcase />
+          <CityShowcase />
+          <LuxuryShowcase />
 
- <AboutSection />
+          <HorizontalListingRow
+            title=""
+            listings={recentlyViewed}
+            currentUser={currentUser}
+          />
 
- <CuratedOffers />
-  <FAQSection />
-   
+          <AboutSection />
+          <CuratedOffers />
+          <FAQSection />
 
-    {chandniChowkListings.length > 0 && (
-      <HorizontalListingRow 
-      
-        title=""
-        listings={chandniChowkListings}
-        currentUser={currentUser}
-      />
-    )}
+          {chandniChowkListings.length > 0 && (
+            <HorizontalListingRow
+              title=""
+              listings={chandniChowkListings}
+              currentUser={currentUser}
+            />
+          )}
 
-   <div
-  id="results" className=" pt-8 grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-6 gap-4 px-4 sm:px-8"
->
-      {/* {remainingListings.map((list: SafeListing) => (
-        <ListingCard
-          key={list.id}
-          data={list}
-          currentUser={currentUser}
-          layout="grid"
-        />
-      ))} */}
-    </div>
-
-  </div>
-</Container>
+          <div
+            id="results"
+            className="pt-8 grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-6 gap-4 px-4 sm:px-8"
+          >
+            {remainingListings.map((list) => (
+              <ListingCard
+                key={list.id}
+                data={list}
+                currentUser={currentUser}
+                layout="grid"
+              />
+            ))}
+          </div>
+        </div>
+      </Container>
     </ClientOnly>
   );
 }
