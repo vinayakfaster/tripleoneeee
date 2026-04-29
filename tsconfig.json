@@ -21,8 +21,4 @@
   },
   "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts", "app/**/*"],
   "exclude": ["node_modules"]
-<<<<<<< HEAD
 }
-=======
-}
->>>>>>> ce3c090 (sync fix)
