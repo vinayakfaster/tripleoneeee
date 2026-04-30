@@ -1,10 +1,12 @@
-// app/api/enquiry/route.ts
 import { NextResponse } from "next/server";
 import prisma from "@/lib/prismadb";
 
 export async function POST(request: Request) {
   try {
-    const body = await request.json();
+    // ✅ Use text() + JSON.parse instead of request.json()
+    // request.json() triggers an undici internal bug on some Vercel Node versions
+    const raw  = await request.text();
+    const body = JSON.parse(raw);
 
     const {
       name, phone, email, message,
@@ -21,36 +23,29 @@ export async function POST(request: Request) {
       );
     }
 
-    // Merge purposeOfStay + needStay into message since schema doesn't have those columns
     const fullMessage = [
-      message        ? `Message: ${message}`             : null,
-      purposeOfStay  ? `Purpose: ${purposeOfStay}`       : null,
-      needStay       ? `Need accommodation: ${needStay}` : null,
+      message       ? `Message: ${message}`             : null,
+      purposeOfStay ? `Purpose: ${purposeOfStay}`       : null,
+      needStay      ? `Need accommodation: ${needStay}` : null,
     ]
       .filter(Boolean)
       .join("\n") || null;
 
     const enquiry = await prisma.enquiry.create({
       data: {
-        // ── Required ──
         name:  String(name),
         phone: String(phone),
-
-        // ── Optional — exactly matching your deployed schema ──
         email: email ? String(email) : "",
+
         message:      fullMessage,
-        guestCount:   guestCount   ? Number(guestCount)   : null,
-        startDate:    startDate    ? new Date(startDate)  : null,
-        endDate:      endDate      ? new Date(endDate)    : null,
+        guestCount:   guestCount ? Number(guestCount) : null,
+        startDate:    startDate  ? new Date(startDate) : null,
+        endDate:      endDate    ? new Date(endDate)   : null,
         listingTitle: listingTitle ? String(listingTitle) : null,
         listingImage: listingImage ? String(listingImage) : null,
         guestId:      guestId      ? String(guestId)      : null,
         status:       "pending",
-
-        // listingId is String (not optional) in your schema — pass empty string if null
-        listingId: listingId ? String(listingId) : "",
-
-        // userId — only pass if truthy
+        listingId:    listingId    ? String(listingId)    : "",
         ...(userId ? { userId: String(userId) } : {}),
       },
     });
