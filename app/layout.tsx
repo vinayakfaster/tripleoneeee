@@ -14,6 +14,7 @@ import getCurrentUser from "./actions/getCurrentUser";
 import "@/styles/globals.css";
 import { Toaster } from "react-hot-toast";
 import ChatWidget from "@/components/ChatWidget";
+import ScrollToTop from "@/components/ScrollToTop";
 // ✅ THE FIX — tells Next.js to always render at request time,
 // never statically preload. Required whenever layout calls headers() /
 // cookies() / getServerSession().
@@ -58,6 +59,7 @@ export default async function RootLayout({
         <GoogleMapsProvider>
           {/* GLOBAL MODALS */}
           <ContactSupportModal />
+          <ScrollToTop />
 
           <ClientOnly>
             <ToastContainerBar />
