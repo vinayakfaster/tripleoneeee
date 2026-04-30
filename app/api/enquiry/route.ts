@@ -1,52 +1,76 @@
+// app/api/enquiry/route.ts
 import { NextResponse } from "next/server";
 import prisma from "@/lib/prismadb";
-import getCurrentUser from "@/app/actions/getCurrentUser";
 
 export async function POST(request: Request) {
   try {
-    const currentUser = await getCurrentUser();
     const body = await request.json();
 
     const {
-      listingId,
-      name,
-      phone,
-      email,
-      message,
-      startDate,
-      endDate,
-      guestCount,
-      listingTitle,
-      listingImage,
-      guestId,
+      name, phone, email, message,
+      purposeOfStay, guestCount, needStay,
+      startDate, endDate,
+      listingId, listingTitle, listingImage,
+      userId, guestId,
     } = body;
 
-    if (!listingId || !name || !phone) {
-      return NextResponse.json({ error: "Missing fields" }, { status: 400 });
+    if (!name || !phone) {
+      return NextResponse.json(
+        { error: "Name and phone are required" },
+        { status: 400 }
+      );
     }
+
+    // Merge purposeOfStay + needStay into message since schema doesn't have those columns
+    const fullMessage = [
+      message        ? `Message: ${message}`             : null,
+      purposeOfStay  ? `Purpose: ${purposeOfStay}`       : null,
+      needStay       ? `Need accommodation: ${needStay}` : null,
+    ]
+      .filter(Boolean)
+      .join("\n") || null;
 
     const enquiry = await prisma.enquiry.create({
       data: {
-        listingId,
-        userId: currentUser?.id || null,
-        name,
-        phone,
-        email,
-        message,
-        startDate: startDate ? new Date(startDate) : null,
-        endDate: endDate ? new Date(endDate) : null,
-        guestCount: guestCount ? Number(guestCount) : 0,
-        listingTitle,
-        listingImage,
+        // ── Required ──
+        name:  String(name),
+        phone: String(phone),
+
+        // ── Optional — exactly matching your deployed schema ──
+        email: email ? String(email) : "",
+        message:      fullMessage,
+        guestCount:   guestCount   ? Number(guestCount)   : null,
+        startDate:    startDate    ? new Date(startDate)  : null,
+        endDate:      endDate      ? new Date(endDate)    : null,
+        listingTitle: listingTitle ? String(listingTitle) : null,
+        listingImage: listingImage ? String(listingImage) : null,
+        guestId:      guestId      ? String(guestId)      : null,
+        status:       "pending",
+
+        // listingId is String (not optional) in your schema — pass empty string if null
+        listingId: listingId ? String(listingId) : "",
+
+        // userId — only pass if truthy
+        ...(userId ? { userId: String(userId) } : {}),
       },
     });
 
-    return NextResponse.json(enquiry);
-  } catch (error: any) {
-    console.error("ENQUIRY API ERROR:", error);
-    return NextResponse.json(
-      { error: error.message || "Internal Server Error" },
-      { status: 500 }
-    );
+    return NextResponse.json(enquiry, { status: 201 });
+  } catch (error: unknown) {
+    console.error("ENQUIRY POST ERROR:", error);
+    const msg = error instanceof Error ? error.message : "Internal Server Error";
+    return NextResponse.json({ error: msg }, { status: 500 });
+  }
+}
+
+export async function GET() {
+  try {
+    const enquiries = await prisma.enquiry.findMany({
+      orderBy: { createdAt: "desc" },
+    });
+    return NextResponse.json(enquiries);
+  } catch (error: unknown) {
+    const msg = error instanceof Error ? error.message : "Internal Server Error";
+    return NextResponse.json({ error: msg }, { status: 500 });
   }
 }

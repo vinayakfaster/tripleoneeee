@@ -1,15 +1,15 @@
-// /app/admin/page.tsx
-
 import getCurrentUser from "../actions/getCurrentUser";
 import ClientOnly from "@/components/ClientOnly";
 import EmptyState from "@/components/EmptyState";
 import AdminReservationsClient from "./AdminReservationsClient";
 import prisma from "@/lib/prismadb";
 import { SafeUser } from "../types";
-
+ 
+export const dynamic = "force-dynamic";
+ 
 export default async function AdminPage() {
   const currentUser = await getCurrentUser();
-
+ 
   if (!currentUser || currentUser.role !== "admin") {
     return (
       <ClientOnly>
@@ -17,36 +17,37 @@ export default async function AdminPage() {
       </ClientOnly>
     );
   }
-
+ 
   // ── ENQUIRIES ──
   const enquiries = await prisma.enquiry.findMany({
     orderBy: { createdAt: "desc" },
   });
-
-  const safeEnquiries = enquiries.map((enquiry) => ({
-    ...enquiry,
-    createdAt: enquiry.createdAt.toISOString(),
+ 
+  // ✅ Convert ALL Date fields to strings — no Date objects passed to client
+  const safeEnquiries = enquiries.map((e) => ({
+    ...e,
+    createdAt:    e.createdAt.toISOString(),
+    startDate:    e.startDate    ? e.startDate.toISOString()    : null,
+    endDate:      e.endDate      ? e.endDate.toISOString()      : null,
+    checkedInAt:  e.checkedInAt  ? e.checkedInAt.toISOString()  : null,
+    checkedOutAt: e.checkedOutAt ? e.checkedOutAt.toISOString() : null,
   }));
-
+ 
   // ── RESERVATIONS ──
   const reservations = await prisma.reservation.findMany({
-    where: {
-      endDate: { gte: new Date() },
-    },
+    where: { endDate: { gte: new Date() } },
     include: {
       user: true,
-      listing: {
-        include: { user: true },
-      },
+      listing: { include: { user: true } },
     },
     orderBy: { startDate: "asc" },
   });
-
+ 
   const safeReservations = reservations.map((reservation) => ({
     ...reservation,
-    createdAt:  reservation.createdAt.toISOString(),
-    startDate:  reservation.startDate.toISOString(),
-    endDate:    reservation.endDate.toISOString(),
+    createdAt: reservation.createdAt.toISOString(),
+    startDate: reservation.startDate.toISOString(),
+    endDate:   reservation.endDate.toISOString(),
     user: {
       ...reservation.user,
       createdAt:     reservation.user.createdAt.toISOString(),
@@ -68,16 +69,15 @@ export default async function AdminPage() {
         emailVerified: reservation.listing.user.emailVerified?.toISOString() ?? null,
       },
     },
-  })) as any[];   // ← type cast — SafeReservation mismatch silently ignore
-
-  // ── CURRENT USER ──
+  })) as any[];
+ 
   const safeCurrentUser: SafeUser = {
     ...currentUser,
     createdAt:     new Date(currentUser.createdAt).toISOString(),
-    updatedAt:     currentUser.updatedAt ? new Date(currentUser.updatedAt).toISOString() : null,
+    updatedAt:     currentUser.updatedAt     ? new Date(currentUser.updatedAt).toISOString()     : null,
     emailVerified: currentUser.emailVerified ? new Date(currentUser.emailVerified).toISOString() : null,
   };
-
+ 
   return (
     <ClientOnly>
       <AdminReservationsClient
