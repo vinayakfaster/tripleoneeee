@@ -28,6 +28,15 @@ const listing = listingRaw
   }
 
   return (
-    <EnquiryClient listing={listing} currentUser={currentUser} />
+   <EnquiryClient
+  listing={{
+    ...listing,
+    id: listing.id,
+    createdAt: typeof listing.createdAt === 'string' 
+      ? listing.createdAt 
+      : listing.createdAt.toISOString(),
+  }}
+  currentUser={currentUser}
+/>
   );
 }
