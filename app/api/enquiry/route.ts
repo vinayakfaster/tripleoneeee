@@ -1,12 +1,9 @@
-import { NextResponse } from "next/server";
+import { NextRequest, NextResponse } from "next/server";
 import prisma from "@/lib/prismadb";
 
-export async function POST(request: Request) {
+export async function POST(req: NextRequest) {
   try {
-    // ✅ Use text() + JSON.parse instead of request.json()
-    // request.json() triggers an undici internal bug on some Vercel Node versions
-    const raw  = await request.text();
-    const body = JSON.parse(raw);
+    const body = await req.json();
 
     const {
       name, phone, email, message,
