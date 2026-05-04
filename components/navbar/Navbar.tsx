@@ -304,14 +304,14 @@ const handleEnquire = () => {
             <svg width="14" height="14" fill="currentColor" viewBox="0 0 24 24">
               <path d="M6.62 10.79a15.05 15.05 0 006.59 6.59l2.2-2.2a1 1 0 011.01-.24 11.47 11.47 0 003.58.57 1 1 0 011 1V20a1 1 0 01-1 1A17 17 0 013 4a1 1 0 011-1h3.5a1 1 0 011 1 11.47 11.47 0 00.57 3.58 1 1 0 01-.25 1.01l-2.2 2.2z"/>
             </svg>
-            +91 9876543210
+            +91 8448811165
           </div>
 
           {/* Right */}
           <div style={{ display: "flex", alignItems: "center", gap: "10px" }}>
 
             {/* Phone mobile */}
-            <a href="tel:+919876543210" className="md:hidden" style={{
+            <a href="tel:+918448-811165" className="md:hidden" style={{
               display: "flex", alignItems: "center", justifyContent: "center",
               width: "34px", height: "34px", borderRadius: "50%",
               background: "rgba(196,169,122,0.15)", color: OL.gold,
@@ -801,12 +801,12 @@ const handleEnquire = () => {
 
               {/* Phone bottom */}
               <div style={{ marginTop: "auto", paddingTop: "20px", borderTop: `1px solid ${OL.goldLight}` }}>
-                <a href="tel:+919876543210"
+                <a href="tel:+918448-811165"
                   style={{ display: "flex", alignItems: "center", gap: "8px", color: OL.gold, fontSize: "12px", fontFamily: "'Lato', sans-serif", textDecoration: "none" }}>
                   <svg width="13" height="13" fill="currentColor" viewBox="0 0 24 24">
                     <path d="M6.62 10.79a15.05 15.05 0 006.59 6.59l2.2-2.2a1 1 0 011.01-.24 11.47 11.47 0 003.58.57 1 1 0 011 1V20a1 1 0 01-1 1A17 17 0 013 4a1 1 0 011-1h3.5a1 1 0 011 1 11.47 11.47 0 00.57 3.58 1 1 0 01-.25 1.01l-2.2 2.2z"/>
                   </svg>
-                  +91 9876543210
+                  +91 8448-811165
                 </a>
               </div>
             </motion.div>
