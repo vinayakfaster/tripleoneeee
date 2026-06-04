@@ -21,7 +21,7 @@ interface HomeProps {
 export default async function Page({ searchParams }: HomeProps) {
   const allListings = await getListings(searchParams ?? {});
 
-  const listings: SafeListing[] = (allListings ?? []).map((item) => ({
+  const listings: SafeListing[] = (allListings ?? []).map((item: any) => ({
     ...item,
     isBestSeller: false,
   }));
@@ -98,14 +98,14 @@ export default async function Page({ searchParams }: HomeProps) {
             id="results"
             className="pt-8 grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-6 gap-4 px-4 sm:px-8"
           >
-            {remainingListings.map((list) => (
+            {/* {remainingListings.map((list) => (
               <ListingCard
                 key={list.id}
                 data={list}
                 currentUser={currentUser}
                 layout="grid"
               />
-            ))}
+            ))} */}
           </div>
         </div>
       </Container>

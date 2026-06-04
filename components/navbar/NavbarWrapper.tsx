@@ -13,6 +13,7 @@ const HIDE_NAVBAR_PATHS = [
   "/blog/",
    "/enquiry/",
   "/admin/",
+  "/gallery/",
 ];
 
 export default function NavbarWrapper({ currentUser }: Props) {
