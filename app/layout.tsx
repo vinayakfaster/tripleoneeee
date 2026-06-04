@@ -23,8 +23,12 @@ export const dynamic = "force-dynamic";
 export const metadata = {
   title: "TripleOne",
   description: "TripleOne",
-  icons:
-    "https://img.icons8.com/?size=100&id=ZblEpxMTnnq4&format=png&color=000000",
+  icons: {
+    icon: "/logo.png",
+    shortcut: "/logo.png",
+    apple: "/logo.png",
+    
+  },
 };
 
 const nunito = Nunito({
