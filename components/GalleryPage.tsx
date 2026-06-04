@@ -417,7 +417,7 @@ function Card({ img, index, delay, onClick }: {
       <div className="gl-card-ovl">
         <span className="gl-card-tag">{img.tag}</span>
         <div className="gl-card-rule" />
-        <span className="gl-card-label">{img.label}</span>
+        <span className="gl-card-label"></span>
       </div>
     </div>
   );
