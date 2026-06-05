@@ -1,9 +1,15 @@
+// app/api/enquiry/route.ts
+
 import { NextRequest, NextResponse } from "next/server";
 import prisma from "@/lib/prismadb";
 
 export async function POST(req: NextRequest) {
   try {
-    const body = await req.json();
+    // ── FIX: use req.text() then JSON.parse instead of req.json() ──
+    // req.json() causes "Cannot read private member #state" on some
+    // Node/Vercel versions due to undici Request class mismatch
+    const rawText = await req.text();
+    const body = JSON.parse(rawText);
 
     const {
       name, phone, email, message,
@@ -30,14 +36,13 @@ export async function POST(req: NextRequest) {
 
     const enquiry = await prisma.enquiry.create({
       data: {
-        name:  String(name),
-        phone: String(phone),
-        email: email ? String(email) : "",
-
+        name:         String(name),
+        phone:        String(phone),
+        email:        email ? String(email) : "",
         message:      fullMessage,
-        guestCount:   guestCount ? Number(guestCount) : null,
-        startDate:    startDate  ? new Date(startDate) : null,
-        endDate:      endDate    ? new Date(endDate)   : null,
+        guestCount:   guestCount  ? Number(guestCount)  : null,
+        startDate:    startDate   ? new Date(startDate)  : null,
+        endDate:      endDate     ? new Date(endDate)    : null,
         listingTitle: listingTitle ? String(listingTitle) : null,
         listingImage: listingImage ? String(listingImage) : null,
         guestId:      guestId      ? String(guestId)      : null,
