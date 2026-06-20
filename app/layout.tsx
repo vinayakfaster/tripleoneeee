@@ -15,9 +15,8 @@ import "@/styles/globals.css";
 import { Toaster } from "react-hot-toast";
 import ChatWidget from "@/components/ChatWidget";
 import ScrollToTop from "@/components/ScrollToTop";
-// ✅ THE FIX — tells Next.js to always render at request time,
-// never statically preload. Required whenever layout calls headers() /
-// cookies() / getServerSession().
+import Script from "next/script"; // ✅ NEW IMPORT
+
 export const dynamic = "force-dynamic";
 
 export const metadata = {
@@ -27,7 +26,6 @@ export const metadata = {
     icon: "/logo.png",
     shortcut: "/logo.png",
     apple: "/logo.png",
-    
   },
 };
 
@@ -42,16 +40,30 @@ export default async function RootLayout({
 }: {
   children: React.ReactNode;
 }) {
-
-
   return (
     <html lang="en" className={nunito.variable}>
       <head>
-  <link
-    href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400&family=Lato:wght@300;400;700&display=swap"
-    rel="stylesheet"
-  />
-</head>
+        <link
+          href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400&family=Lato:wght@300;400;700&display=swap"
+          rel="stylesheet"
+        />
+
+        {/* ✅ GTM Snippet 1 — inside <head> */}
+        <Script
+          id="gtm-script"
+          strategy="afterInteractive"
+          dangerouslySetInnerHTML={{
+            __html: `
+              (function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+              new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+              j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+              'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+              })(window,document,'script','dataLayer','GTM-WNSKGBVS');
+            `,
+          }}
+        />
+      </head>
+
       <body
         className="
           font-sans
@@ -60,6 +72,16 @@ export default async function RootLayout({
           min-h-screen
         "
       >
+        {/* ✅ GTM Snippet 2 — immediately after <body> tag */}
+        <noscript>
+          <iframe
+            src="https://www.googletagmanager.com/ns.html?id=GTM-WNSKGBVS"
+            height="0"
+            width="0"
+            style={{ display: "none", visibility: "hidden" }}
+          />
+        </noscript>
+
         <GoogleMapsProvider>
           {/* GLOBAL MODALS */}
           <ContactSupportModal />
@@ -72,7 +94,6 @@ export default async function RootLayout({
             <LoginModal />
             <RentModal />
             <NavbarWrapper />
-             {/* ✅ ADD CHAT HERE (IMPORTANT) */}
             <ChatWidget />
           </ClientOnly>
 
@@ -81,7 +102,7 @@ export default async function RootLayout({
 
           <Footer />
         </GoogleMapsProvider>
-          <Toaster position="top-center" />
+        <Toaster position="top-center" />
       </body>
     </html>
   );
