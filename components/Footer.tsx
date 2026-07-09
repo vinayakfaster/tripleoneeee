@@ -84,13 +84,21 @@ function Footer() {
               TripleOne
             </span>
           </div>
-          <button
-            type="button"
-            onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
-            className="text-[11px] uppercase tracking-widest text-[#c9c4b6] hover:text-[#c8a05a]"
+          <a
+            href="#top"
+            onClick={(e) => {
+              e.preventDefault();
+              const topEl = document.getElementById("top");
+              if (topEl) {
+                topEl.scrollIntoView({ behavior: "smooth", block: "start" });
+              } else {
+                window.scrollTo({ top: 0, behavior: "smooth" });
+              }
+            }}
+            className="cursor-pointer text-[11px] uppercase tracking-widest text-[#c9c4b6] hover:text-[#c8a05a]"
           >
             Back to top ↑
-          </button>
+          </a>
         </div>
 
         {/* accordion columns */}
@@ -104,7 +112,7 @@ function Footer() {
 
           <div className="flex flex-col gap-2 text-center sm:flex-row sm:gap-6 sm:text-left">
             <a
-              href="https://www.instagram.com/yourusername"
+              href="https://www.instagram.com/_tripleone__?igsh=MXhxNDFqaXB3anh3Nw=="
               target="_blank"
               rel="noopener noreferrer"
               className="text-[#c9c4b6] hover:text-[#c8a05a] hover:underline"
@@ -137,4 +145,3 @@ function Footer() {
 }
 
 export default Footer;
-
