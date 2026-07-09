@@ -25,6 +25,13 @@ export async function generateMetadata({
       title: `${post.title} | ${post.location}`,
       description: post.intro,
       images: [post.image],
+      type: "article",
+    },
+    twitter: {
+      card: "summary_large_image",
+      title: `${post.title} | ${post.location}`,
+      description: post.intro,
+      images: [post.image],
     },
   };
 }
