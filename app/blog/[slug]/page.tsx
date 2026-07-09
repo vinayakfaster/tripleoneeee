@@ -41,3 +41,4 @@ export default function BlogPostPage({ params }: { params: { slug: string } }) {
   if (!post) notFound();
   return <BlogPostClient post={post} />;
 }
+
