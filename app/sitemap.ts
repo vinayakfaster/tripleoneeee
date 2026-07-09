@@ -1,4 +1,5 @@
-import { MetadataRoute } from 'next'
+// ./app/sitemap.ts
+import type { MetadataRoute } from 'next'
 
 export default function sitemap(): MetadataRoute.Sitemap {
   const base = 'https://tripleonebookings.com'
