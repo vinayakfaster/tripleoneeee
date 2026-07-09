@@ -306,6 +306,64 @@ export const blogData: BlogPost[] = [
     author: "Sahil Mehrotra",
     authorRole: "Design & Travel Writer",
   },
+  {
+  slug: "supernova-noida-complete-guide",
+  title: "Supernova Noida: The Complete Guide to Staying in Sector 94's Tallest Tower",
+  location: "Spira Supernova, Sector 94",
+  image: "/images/supernova-guide/hero.jpg", // replace with your actual image
+  category: "Travel Guide",
+  tagline: "Sector 94's Tallest Tower BnB",
+  readTime: "6 min read",
+  publishedAt: "July 2025",
+  heroQuote: "A view that's genuinely hard to book anywhere else in the city at this price point.",
+  intro: "If you're searching for a place to stay in Supernova Noida, you've probably already noticed it's hard to miss — literally. Rising over Sector 94 on the Noida-Greater Noida Expressway, Supernova is home to Spira, the tallest building in Noida, and it's quickly become one of the most talked-about places to book a short stay in the city.",
+  sections: [
+    {
+      heading: "What Is Supernova, Exactly?",
+      body: "Supernova is a large mixed-use development in Sector 94, Noida — spread across residential towers, serviced suites, office space, and a mall, all in one complex. The development sits directly opposite the Okhla Bird Sanctuary and connects straight to the Supernova metro station, so you can step out of a train and be checked in within minutes.",
+    },
+    {
+      heading: "Why Guests Choose a Supernova Stay Over a Hotel",
+      body: "The view is the experience. A high-floor apartment gives you uninterrupted sightlines over a protected wetland — something no hotel room in central Noida or Delhi can offer. Most units come with full living areas, kitchens, and access to pools and gyms. Direct metro access and expressway connectivity mean you're never more than a short ride from South Delhi via the DND Flyway.",
+    },
+    {
+      heading: "Getting There",
+      body: "Supernova sits right on the Noida-Greater Noida Expressway in Sector 94. By metro: the complex connects directly to Supernova metro station. By road: direct expressway access from South Delhi via the DND Flyway, or from Greater Noida along the expressway. From IGI Airport: a manageable drive via the Delhi-Noida road network.",
+    },
+    {
+      heading: "What's Right Next Door",
+      body: "The Okhla Bird Sanctuary is home to over 300 recorded bird species and is a designated Important Bird Area — a rare patch of wetland habitat in an otherwise dense urban stretch of NCR. Beyond the sanctuary, Sector 94's mall and commercial spaces mean you don't have to go far for food, shopping, or basic errands.",
+    },
+  ],
+  highlights: [
+    "Direct Supernova metro connectivity",
+    "Opposite Okhla Bird Sanctuary",
+    "30th floor and above skyline views",
+    "Noida-Greater Noida Expressway access",
+    "Full kitchen & building amenities",
+    "Quick DND Flyway access to South Delhi",
+  ],
+  amenities: [
+    { icon: "🚇", label: "Metro Access" },
+    { icon: "🌆", label: "Skyline Views" },
+    { icon: "🐦", label: "Bird Sanctuary" },
+    { icon: "🏊", label: "Pool" },
+    { icon: "🏋️", label: "Gym" },
+    { icon: "🍳", label: "Full Kitchen" },
+    { icon: "🚗", label: "Expressway" },
+    { icon: "📶", label: "Fibre WiFi" },
+  ],
+  nearbyAttractions: [
+    "Okhla Bird Sanctuary — 0.1 km",
+    "Supernova Metro Station — 0 km",
+    "DLF Mall of India — 3 km",
+    "South Delhi via DND — 15 min",
+  ],
+  bestTimeToVisit: "October to March — clear skies, cool evenings, best birdwatching season",
+  priceRange: "₹6,500 – ₹55,000 per night",
+  author: "Aryan Kapoor",
+  authorRole: "Senior Travel Editor",
+},
 ];
 
 export function getBlogBySlug(slug: string): BlogPost | undefined {
