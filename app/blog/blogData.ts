@@ -328,7 +328,7 @@ export const blogData: BlogPost[] = [
     slug: "supernova-noida-complete-guide",
     title: "Supernova Noida: The Complete Guide to Staying in Sector 94's Tallest Tower",
     location: "Spira Supernova, Sector 94",
-    image: "/images/supernova-guide/hero.jpg",
+    image: "/image/upload/v1783583238/IMG_9473_fk1vgu.png",
     category: "Travel Guide",
     tagline: "Sector 94's Tallest Tower BnB",
     readTime: "6 min read",
