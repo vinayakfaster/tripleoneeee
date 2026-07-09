@@ -419,13 +419,14 @@ export default function BlogPostClient({ post }: { post: BlogPost }) {
 
       <article>
         {/* ── HERO ── */}
-        <div className="relative w-full overflow-hidden" style={{ height: "100vh", minHeight: "600px" }}>
+        <div className="relative w-full overflow-hidden h-[65vh] min-h-[440px] md:h-screen md:min-h-[600px]">
           <Image
             src={post.image}
             alt={post.title}
             fill
             priority
-            className="object-cover"
+            sizes="100vw"
+            className="object-cover object-center"
             style={{ filter: "brightness(0.55)" }}
           />
 
@@ -449,7 +450,7 @@ export default function BlogPostClient({ post }: { post: BlogPost }) {
           </div>
 
           {/* Hero text */}
-          <div className="absolute inset-0 z-10 flex flex-col items-center justify-end pb-16 px-4 text-center">
+          <div className="absolute inset-0 z-10 flex flex-col items-center justify-end pb-8 md:pb-16 px-4 text-center">
             <p
               className="text-xs tracking-[0.35em] uppercase mb-4 text-white/70"
               style={{ fontFamily: "'Lato', sans-serif" }}
@@ -469,7 +470,7 @@ export default function BlogPostClient({ post }: { post: BlogPost }) {
               {post.tagline}
             </p>
             {/* Scroll cue */}
-            <div className="mt-10 flex flex-col items-center gap-2 text-white/50">
+            <div className="mt-6 md:mt-10 hidden sm:flex flex-col items-center gap-2 text-white/50">
               <span className="text-xs tracking-[0.2em] uppercase" style={{ fontFamily: "'Lato', sans-serif" }}>Scroll</span>
               <div className="w-[1px] h-8 bg-white/30" style={{ animation: "pulse 2s infinite" }} />
             </div>
@@ -655,11 +656,12 @@ export default function BlogPostClient({ post }: { post: BlogPost }) {
 
                     {section.image && (
                       <figure className="mt-10 -mx-0 md:-mx-16">
-                        <div className="relative w-full overflow-hidden rounded-sm" style={{ height: "420px" }}>
+                        <div className="relative w-full overflow-hidden rounded-sm h-[260px] sm:h-[340px] md:h-[420px]">
                           <Image
                             src={section.image}
                             alt={section.imageCaption || section.heading}
                             fill
+                            sizes="(max-width: 768px) 100vw, 900px"
                             className="object-cover"
                           />
                         </div>
@@ -690,8 +692,14 @@ export default function BlogPostClient({ post }: { post: BlogPost }) {
               <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
                 {post.images.map((img, i: Key | null | undefined) => (
                   <figure key={i} className="gallery-figure">
-                    <div className="gallery-image-wrap relative h-[200px]">
-                      <Image src={img} fill className="object-cover" alt={`${post.title} — additional view`} />
+                    <div className="gallery-image-wrap relative h-[150px] sm:h-[180px] md:h-[200px]">
+                      <Image
+                        src={img}
+                        fill
+                        sizes="(max-width: 640px) 50vw, (max-width: 768px) 33vw, 256px"
+                        className="object-cover"
+                        alt={`${post.title} — additional view`}
+                      />
                     </div>
                   </figure>
                 ))}
@@ -860,11 +868,12 @@ export default function BlogPostClient({ post }: { post: BlogPost }) {
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
               {related.map((r) => (
                 <Link href={`/blog/${r.slug}`} key={r.slug} className="group block">
-                  <div className="relative overflow-hidden" style={{ height: "220px" }}>
+                  <div className="relative overflow-hidden h-[200px] sm:h-[220px]">
                     <Image
                       src={r.image}
                       alt={r.title}
                       fill
+                      sizes="(max-width: 768px) 100vw, 33vw"
                       className="object-cover transition-transform duration-500 group-hover:scale-105"
                     />
                     <div className="absolute inset-0" style={{ background: "linear-gradient(to top, rgba(0,0,0,0.5), transparent)" }} />
