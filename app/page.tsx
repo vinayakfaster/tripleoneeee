@@ -13,6 +13,19 @@ import CityShowcase from "@/components/CityShowcase";
 import AboutSection from "@/components/AboutSection";
 import CuratedOffers from "@/components/CuratedOffers";
 import FAQSection from "@/components/FAQSection";
+import type { Metadata } from "next"; // ← ADD
+
+// ← ADD THIS BLOCK
+export const metadata: Metadata = {
+  title: "Room in Supernova Noida | Premium Stay & Modern Comfort",
+  description: "Looking for a room in Supernova Noida? Explore stylish spaces, modern amenities, and a comfortable stay in one of Noida's top locations.",
+  keywords: "room in supernova noida, luxury stay noida, spira tower bnb",
+  alternates: {
+    canonical: "https://tripleonebookings.com/",
+  },
+  robots: "index, follow",
+  authors: [{ name: "TripleOne Bookings" }],
+};
 
 interface HomeProps {
   searchParams?: IListingsParams;
@@ -28,7 +41,6 @@ export default async function Page({ searchParams }: HomeProps) {
 
   const currentUser: SafeUser | null = await getCurrentUser();
 
-  // SAFE GUARD (no crash if empty)
   if (!listings || listings.length === 0) {
     return (
       <ClientOnly>
