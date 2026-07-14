@@ -13,9 +13,9 @@ import CityShowcase from "@/components/CityShowcase";
 import AboutSection from "@/components/AboutSection";
 import CuratedOffers from "@/components/CuratedOffers";
 import FAQSection from "@/components/FAQSection";
-import type { Metadata } from "next"; // ← ADD
+import type { Metadata } from "next";
 
-// ← ADD THIS BLOCK
+// ✅ SEO METADATA
 export const metadata: Metadata = {
   title: "Room in Supernova Noida | Premium Stay & Modern Comfort",
   description: "Looking for a room in Supernova Noida? Explore stylish spaces, modern amenities, and a comfortable stay in one of Noida's top locations.",
@@ -81,6 +81,11 @@ export default async function Page({ searchParams }: HomeProps) {
         src="https://checkout.razorpay.com/v1/checkout.js"
         strategy="lazyOnload"
       />
+
+      {/* ✅ HIDDEN H1 — invisible to users, visible to Google */}
+      <h1 className="sr-only">
+        Room in Supernova Noida | Premium Stay & Modern Comfort
+      </h1>
 
       <Container>
         <div className="-mt-16 md:-mt-20">
